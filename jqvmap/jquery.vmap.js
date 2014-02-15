@@ -432,10 +432,13 @@
       if (e.type == 'mouseover') {
         jQuery(params.container).trigger(regionMouseOverEvent, [code, mapData.pathes[code].name]);
         if (!regionMouseOverEvent.isDefaultPrevented()) {
-          map.highlight(code, path);
+          // map.highlight(code, path);
+          map.highlightRegionOfCountry(code);
         }
         if (params.showTooltip) {
           map.label.text(mapData.pathes[code].name);
+          var region = getRegion(code);;
+          map.label.text (region["name"]);
           jQuery(params.container).trigger(labelShowEvent, [map.label, code]);
 
           if (!labelShowEvent.isDefaultPrevented()) {
@@ -445,7 +448,8 @@
           }
         }
       } else {
-        map.unhighlight(code, path);
+        // map.unhighlight(code, path);
+        map.unhighlightRegionOfCountry(code);
 
         map.label.hide();
         jQuery(params.container).trigger('regionMouseOut.jqvmap', [code, mapData.pathes[code].name]);
@@ -618,8 +622,65 @@
       }
     },
 
+    // regions: {
+    //   "easternAfrica" : ["bi", "km", "dj", "er", "et", "ke", "mg", "mw", "mu", "mz", "re", "rw", "sc", "so", "ug", "tz", "zm", "zw"],
+    //   "middleAfrica" : ["ao", "cm", "cf", "td", "cg", "cd", "gq", "ga", "st"],
+    //   "northernAfrica" :["dz", "eg", "ly", "ma", "sd", "tn"],
+    //   "southernAfrica" :["bw", "ls", "na", "za", "sz"],
+    //   "westernAfrica" : ["bj", "bf", "cv", "ci", "gm", "gh", "gn", "gw", "lr", "ml", "mr", "ne", "ng", "sn", "sl", "tg"],
+    //   "easternAsia" :["cn", "kp", "jp", "mn", "kr"],
+    //   "southCentralAsia" :["af", "bd", "bt", "in", "ir", "kz", "kg", "mv", "np", "pk", "lk", "tj", "tm", "uz"],
+    //   "southEasternAsia" :["bn", "kh", "tl", "id", "la", "my", "mm", "ph", "th", "vn"],
+    //   "westernAsia" :["az", "am", "cy", "ge", "iq", "il", "jo", "kw", "lb", "om", "qa", "sa", "sy", "tr", "ae", "ye"],
+    //   "easternEurope" :["by", "bg", "cz", "hu", "pl", "md", "ro", "ru", "sk", "ua"],
+    //   "northernEurope" :["dk", "ee", "fi", "is", "ie", "lv", "lt", "no", "se", "gb"],
+    //   "southernEurope" :["al", "ba", "hr", "gr", "it", "mt", "pt", "si", "es", "mk", "rs"],
+    //   "westernEurope" :["at", "be", "fr", "de", "nl", "ch"],
+    //   "caribbean" :["ag", "ds", "bb", "cu", "dn", "do", "gd", "ht", "jm", "kn", "lc", "tt"],
+    //   "centralAmerica" :["bz", "cr", "sv", "gt", "hn", "mx", "ni", "pa"],
+    //   "southAmerica" :["ar", "bo", "br", "cl", "co", "fk", "gy", "gf", "pe", "py", "sr", "uy", "ve"],
+    //   "northernAmerica" :["ca", "gl", "us"],
+    //   "oceania" :["au", "nz", "fj", "sb", "pg", "vu", "nc", "pf", "tv"]
+    // },
+
+    // getCountriesInRegion : function(cc) {
+    //   for (var region in this.regions)
+    //   {
+    //     for(var country in this.regions[region])
+    //     {
+    //       if (cc == country)
+    //         return regions[region];
+    //     }
+    //   }
+    // },
+
+
+    highlightRegionOfCountry: function (cc) {
+      // this.highlight("us");
+      var countries = getCountriesInRegion(cc);
+      var region = getRegion(cc);
+      countries = region["countries"];
+      // this.label.text (region["name"]);
+
+      for (countryIndex in countries)
+      {
+        this.highlight(countries[countryIndex]);
+      }
+      this.highlight(cc);
+    },
+
+    unhighlightRegionOfCountry: function (cc) {
+      var countries = getCountriesInRegion(cc);
+      for (countryIndex in countries)
+      {
+        this.unhighlight(countries[countryIndex]);
+      }
+      this.unhighlight(cc);
+    },
+
     highlight: function (cc, path) {
       path = path || $('#' + this.getCountryId(cc))[0];
+      if(!path) return;
       if (this.hoverOpacity) {
         path.setOpacity(this.hoverOpacity);
       } else if (this.hoverColor) {
@@ -630,6 +691,7 @@
 
     unhighlight: function (cc, path) {
       path = path || $('#' + this.getCountryId(cc))[0];
+      if(!path) return;
       path.setOpacity(1);
       if (path.currentFillColor) {
         path.setFill(path.currentFillColor);
