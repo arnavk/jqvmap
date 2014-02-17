@@ -432,8 +432,8 @@
       if (e.type == 'mouseover') {
         jQuery(params.container).trigger(regionMouseOverEvent, [code, mapData.pathes[code].name]);
         if (!regionMouseOverEvent.isDefaultPrevented()) {
-          // map.highlight(code, path);
-          map.highlightRegionOfCountry(code);
+          map.highlight(code, path);
+          //map.highlightRegionOfCountry(code);
         }
         if (params.showTooltip) {
           map.label.text(mapData.pathes[code].name);
@@ -448,8 +448,8 @@
           }
         }
       } else {
-        // map.unhighlight(code, path);
-        map.unhighlightRegionOfCountry(code);
+        map.unhighlight(code, path);
+        //map.unhighlightRegionOfCountry(code);
 
         map.label.hide();
         jQuery(params.container).trigger('regionMouseOut.jqvmap', [code, mapData.pathes[code].name]);
@@ -653,30 +653,6 @@
     //     }
     //   }
     // },
-
-
-    highlightRegionOfCountry: function (cc) {
-      // this.highlight("us");
-      var countries = getCountriesInRegion(cc);
-      var region = getRegion(cc);
-      countries = region["countries"];
-      // this.label.text (region["name"]);
-
-      for (countryIndex in countries)
-      {
-        this.highlight(countries[countryIndex]);
-      }
-      this.highlight(cc);
-    },
-
-    unhighlightRegionOfCountry: function (cc) {
-      var countries = getCountriesInRegion(cc);
-      for (countryIndex in countries)
-      {
-        this.unhighlight(countries[countryIndex]);
-      }
-      this.unhighlight(cc);
-    },
 
     highlight: function (cc, path) {
       path = path || $('#' + this.getCountryId(cc))[0];
