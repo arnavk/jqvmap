@@ -17,15 +17,12 @@
 		jQuery('#vmap').vectorMap({
 			map: 'world_en',
 			backgroundColor: '#333333',
-			values : sample_data,
 			color: '#ffffff',
 			hoverOpacity: 0.2,
 			selectedColor: '#666666',
 			colors : test,
 			enableZoom: true,
 			showTooltip: true,
-			scaleColors: ['#C8EEFF', '#006491'],
-			normalizeFunction: 'polynomial',
 			onRegionOver : function (element, code, region)
 			{
 				highlightRegionOfCountry(code);

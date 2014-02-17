@@ -206,8 +206,6 @@ var regionMap = {
 		"countries" : ["bi", "km", "dj", "er", "et", "ke", "mg", "mw", "mu", "mz", "re", "rw", "sc", "so", "ug", "tz", "zm", "zw"],
 		"name" : "Eastern Africa"
 	},
-
-
 	"middleAfrica" : {
 		"countries" : ["ao", "cm", "cf", "td", "cg", "cd", "gq", "ga", "st"],
 		"name" : "Middle Africa"
@@ -248,18 +246,14 @@ var regionMap = {
 		"countries" : ["dk", "ee", "fi", "is", "ie", "lv", "lt", "no", "se", "gb"],
 		"name" : "Northern Europe"
 	},
-
 	"southernEurope" : {
 		"countries" : ["al", "ba", "hr", "gr", "it", "mt", "pt", "si", "es", "mk", "rs"],
 		"name" : "Southern Europe"
 	},
-
 	"westernEurope" :{
 		"countries" : ["at", "be", "fr", "de", "nl", "ch"],
 		"name" : "Western Europe"
 	},
-
-
 	"caribbean" : {
 		"countries" : ["bs", "dm", "ag", "ds", "bb", "cu", "dn", "do", "gd", "ht", "jm", "kn", "lc", "tt"],
 		"name" : "Caribbean"
@@ -283,20 +277,13 @@ var regionMap = {
 };
 
 function getCountriesInRegion(cc) {
-	for (var regionKey in regions)
+	for (var regionKey in regionMap)
 	{
-		var region = regions[regionKey];
-		var countries = region["countries"];
-		// console.log(region.toString());
-		// console.log(countries.toString());
-		for(var countryIndex in countries)
+		var countries = regionMap[regionKey].countries;
+		for (var countryIndex in countries)
 		{
-			// console.log(countryIndex);
-			// console.log(countries[countryIndex].toString());
 			if (cc == countries[countryIndex])
 			{
-				// console.log(countries.toString());
-
 				return countries;
 			}
 		}
@@ -309,11 +296,7 @@ function getRegion(cc) {
 }
 
 function highlightRegionOfCountry (cc) {
-      
-      var region = getRegion(cc);
-      countries = region["countries"];
-      
-
+      var countries = getRegion(cc).countries;
       for (countryIndex in countries)
       {
       	$('#vmap').vectorMap('highlight',countries[countryIndex]);
@@ -324,9 +307,7 @@ function highlightRegionOfCountry (cc) {
     }
 
 function unhighlightRegionOfCountry (cc) {
-      // var countries = getCountriesInRegion(cc);
-      var region = getRegion(cc);
-      countries = region["countries"];
+      var countries = getRegion(cc).countries;
       for (countryIndex in countries)
       {
       	$('#vmap').vectorMap('unhighlight',countries[countryIndex]);
